@@ -26,7 +26,7 @@
 (
 SynthDef(\gabor, { |out, freq=440, sustain=0.1, amp = 0.1, width = 0.1|
 	var sig, env;
-	env = LFGauss.ar(sustain, width, loop:0, doneAction: 2);
+	env = LFGauss.ar(sustain, width, loop:0, doneAction: 2).range;
 	sig = SinOsc.ar(freq, 0.5pi) * env * amp;
 	OffsetOut.ar(out, sig);
 }).add;
@@ -56,6 +56,7 @@ Tdef(\x, {
 ~module.theta = [2, -1]; ~module.weights = [[-3, 2], [-2, 0]];
 ~module.weights = ~module.weights + [0.2, -0.1];
 ~module.weights = ~module.weights + [-0.2, 0.1];
+~module.theta = [2, -1]; ~module.weights = [[-3.2, 2], [-2.2, 0.5]];
 
 // different scaling
 ~module.outs = [0, 1]; //  two dimensions
@@ -66,7 +67,7 @@ Tdef(\x, {
 		var dt = 0.001; // maximum is about 1 ms. more will be problematic...
 		(
 			instrument: \gabor,
-			freq: ~module.next.linexp(-2, 2, 300, 10000),
+			freq: ~module.next.linexp(-2, 3, 300, 10000),
 			sustain: dt * 1.5, // 50% overlap
 			width: 0.6,
 			out: [0, 1] // map to two audio channels
